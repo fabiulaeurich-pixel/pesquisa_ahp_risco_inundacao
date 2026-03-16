@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Pesquisa AHP – Risco de Inundação</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+body{font-family:Arial;background:#f4f4f4;margin:0;}
+.container{width:900px;margin:auto;background:white;padding:40px;margin-top:40px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.2);}
+.page{display:none;}
+.active{display:block;}
+.logos{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;}
+.logos img{height:70px;}
+.texto{max-width:650px;margin:auto;text-align:center;line-height:1.6;}
+button{padding:12px 25px;font-size:16px;cursor:pointer;margin:10px;}
+.botoes{display:flex;justify-content:space-between;margin-top:30px;}
+.progress{width:100%;height:20px;background:#ddd;border-radius:10px;margin-bottom:20px;display:none;}
+.progress-bar{height:20px;background:#27ae60;width:0%;border-radius:10px;}
+.pergunta{font-size:20px;text-align:center;margin-top:25px;font-weight:bold;}
+.extremos{display:flex;justify-content:space-between;margin-top:25px;font-weight:bold;font-size:18px;}
+.scale{display:flex;justify-content:space-between;margin-top:30px;}
+.scale label{flex:1;text-align:center;padding:12px;margin:2px;border-radius:6px;cursor:pointer;font-weight:bold;color:white;position:relative;}
+.scale input{display:none;}
+.scale input:checked + span::after{content:"●";position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:18px;color:black;}
+.v9{background:#8B0000;} .v7{background:#C0392B;} .v5{background:#E67E22;} .v3{background:#F4D03F;color:black;} .v1{background:#ecf0f1;color:black;}
+.guia{margin-top:35px;font-size:14px;text-align:center;line-height:1.5;}
+.dim{text-align:center;font-weight:bold;margin-top:10px;color:#555;}
+.btn-pdf {
+    background-color: #2c3e50; /* Azul escuro profissional */
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+
+.btn-pdf:hover {
+    background-color: #34495e;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+<div class="progress" id="progressContainer">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div id="page1" class="page active">
+<div class="logos">
+<img src="logo_unicentro.png">
+<img src="logo_labhidro.png">
+</div>
+<div class="texto">
+<h2>Ponderação de indicadores de análise de risco à inundação</h2>
+<p><b>Bem-vindos à pesquisa!</b></p>
+<p>Muito obrigada por dedicar seu tempo e apoiar minha pesquisa de doutorado.</p>
+<p>Você atua ou já atuou profissional ou voluntariamente na área de defesa civil ou prevenção de desastres? Ou já trabalhou com risco e vulnerabilidade em um contexto científico? Então esta pesquisa é exatamente para você.</p>
+<p>A participação levará cerca de <b>15 a 20 minutos</b>.</p>
+</div>
+<div class="botoes"><div></div><button onclick="nextPage(2)">Continuar</button></div>
+</div>
+
+<div id="page2" class="page">
+<div class="texto">
+<h2>Consentimento</h2>
+<p>Todos os dados serão processados de forma <b>anônima</b> e utilizados apenas para fins científicos.</p>
+<p>Esse trabalho faz parte de minha pesquisa de doutorado em Geografia realizada na Universidade Estadual do Centro-Oeste (UNICENTRO).</p>
+<p>Em caso de dúvidas ou observações, sinta-se à vontade para entrar em contato comigo pelo e-mail:</p>
+<p><b>fabiula.eurich@gmail.com</b></p>
+<br>
+<label><input type="checkbox" id="consentimento"> Eu concordo que minhas respostas sejam utilizadas para fins científicos.</label>
+</div>
+<div class="botoes"><button onclick="prevPage(1)">Voltar</button><button onclick="verificarConsentimento()">Continuar</button></div>
+</div>
+
+<div id="page3" class="page">
+<div class="texto">
+<h2>Conceito utilizado</h2>
+<p style="font-size:20px;"><b>Risco = Perigo × Exposição × Vulnerabilidade</b></p>
+<p>Nesta pesquisa utilizamos uma estrutura hierárquica baseada no método <b>Analytic Hierarchy Process (AHP)</b> para avaliar o risco de inundação.</p>
+<p>A estrutura abaixo apresenta os níveis de análise utilizados no estudo:</p>
+<pre style="text-align:left; font-size:15px; line-height:1.6; background:#f7f7f7; padding:15px; border-radius:6px;">
+RISCO DE INUNDAÇÃO
+│
+├── Perigo
+│    ├ Suscetibilidade física à inundação
+│    └ Precipitação extrema
+│
+├── Vulnerabilidade
+│    ├ Socioeconômica
+│    │     ├ Idade
+│    │     ├ Renda
+│    │     ├ Escolaridade
+│    │     ├ Tipo de residência
+│    │     └ Saneamento básico
+│    │
+│    └ Comportamental / Perceptiva
+│          ├ Consciência sobre mudanças climáticas
+│          └ Percepção de risco a desastres
+│
+└── Exposição
+     ├ Densidade populacional
+     ├ Distância do rio
+     ├ Uso e ocupação do solo
+     └ Densidade predial
+</pre>
+<p>Na próxima etapa você será convidado a comparar pares de indicadores e indicar qual possui maior importância na avaliação do risco de inundação.</p>
+<p>Não existem respostas certas ou erradas. O objetivo é identificar sua percepção sobre a importância relativa de cada indicador.</p>
+</div>
+<div class="botoes"><button onclick="prevPage(2)">Voltar</button><button onclick="nextPage(4)">Continuar</button></div>
+</div>
+
+<div id="page4" class="page">
+<div class="texto">
+<h2>Identificação</h2>
+<p>Área de atuação</p>
+<select id="area" onchange="verificarOutro()">
+    <option value="Defesa Civil">Defesa Civil</option>
+    <option value="Engenharia">Engenharia</option>
+    <option value="Geociências">Geociências</option>
+    <option value="Geografia">Geografia</option>
+    <option value="Gestão de desastres">Gestão de desastres</option>
+    <option value="Gestão de riscos e desastres">Gestão de riscos e desastres</option>
+    <option value="Hidrologia">Hidrologia</option>
+    <option value="Pesquisador/Acadêmico">Pesquisador/Acadêmico</option>
+    <option value="Planejamento urbano">Planejamento urbano</option>
+    <option value="Outro">Outro</option>
+</select>
+<br><br>
+<input type="text" id="area_outro" placeholder="Especifique sua área" style="display:none; padding:8px; width:300px;">
+<p>Anos de experiência</p>
+<select id="experiencia"><option>0-5</option><option>5-10</option><option>10-20</option><option>20+</option></select>
+</div>
+<div class="botoes"><button onclick="prevPage(3)">Voltar</button><button onclick="startAHP()">Iniciar comparações</button></div>
+</div>
+
+<div id="comparacao" class="page">
+<div class="dim" id="dimensao"></div>
+<div class="pergunta" id="textoPergunta"></div>
+<div class="extremos">
+<span id="ladoEsquerdo"></span>
+<span id="ladoDireito"></span>
+</div>
+<div class="scale">
+<label class="v9"><input type="radio" name="escala" value="9"><span>9</span></label>
+<label class="v7"><input type="radio" name="escala" value="7"><span>7</span></label>
+<label class="v5"><input type="radio" name="escala" value="5"><span>5</span></label>
+<label class="v3"><input type="radio" name="escala" value="3"><span>3</span></label>
+<label class="v1"><input type="radio" name="escala" value="1"><span>1</span></label>
+<label class="v3"><input type="radio" name="escala" value="1/3"><span>3</span></label>
+<label class="v5"><input type="radio" name="escala" value="1/5"><span>5</span></label>
+<label class="v7"><input type="radio" name="escala" value="1/7"><span>7</span></label>
+<label class="v9"><input type="radio" name="escala" value="1/9"><span>9</span></label>
+</div>
+<div class="guia">
+<b>Guia da escala AHP</b><br><br>
+1 = mesma importância | 3 = importância moderada | 5 = importância forte | 7 = importância muito forte | 9 = importância extrema
+</div>
+<div class="botoes">
+<button onclick="voltarPergunta()">Voltar</button>
+<button onclick="proximaPergunta()">Continuar</button>
+</div>
+</div>
+
+<div id="final" class="page">
+<div class="texto">
+<h2>Finalizar questionário</h2>
+<p>Clique em enviar para registrar suas respostas.</p>
+</div>
+<div class="botoes"><div></div><button onclick="enviarRespostas()">Enviar respostas</button></div>
+</div>
+
+<div id="enviando" class="page">
+<div class="texto">
+<h2>Enviando respostas...</h2>
+<p>Por favor aguarde alguns segundos.</p>
+</div>
+</div>
+
+<div id="confirmacao" class="page">
+    <h2>Obrigado pela participação</h2>
+    <p>Suas respostas foram registradas com sucesso no banco de dados da pesquisa.</p>
+    <p>Você pode baixar um relatório com suas respostas no botão abaixo:</p>
+    
+    <button onclick="gerarPDF()" class="btn-pdf">
+        📄 Baixar Relatório de Participação (PDF)
+    </button>
+    
+     </p>
+</div>
+
+<script>
+const perguntas = [
+    // RISCO (3 comparações)
+    {dim: "Risco", pergunta: "Considerando o risco de inundação, qual destes indicadores possui maior importância?", a: "Perigo", b: "Vulnerabilidade"},
+    {dim: "Risco", pergunta: "Considerando o risco de inundação, qual destes indicadores possui maior importância?", a: "Perigo", b: "Exposição"},
+    {dim: "Risco", pergunta: "Considerando o risco de inundação, qual destes indicadores possui maior importância?", a: "Vulnerabilidade", b: "Exposição"},
+    
+    // PERIGO (1 comparação)
+    {dim: "Dimensão: Perigo", pergunta: "Considerando o perigo de inundação, qual destes indicadores possui maior importância?", a: "Suscetibilidade física à inundação", b: "Precipitação extrema"},
+    
+    // CATEGORIA VULNERABILIDADE (1 comparação)
+    {dim: "Categoria: Vulnerabilidade", pergunta: "Considerando a vulnerabilidade à inundação, qual destes indicadores possui maior importância?", a: "Socioeconômica", b: "Comportamental/Perceptiva (Emergências Climáticas)"},
+    
+    // VULNERABILIDADE SOCIOECONÔMICA (10 comparações completas)
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Idade", b: "Renda"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Idade", b: "Escolaridade"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Idade", b: "Tipo de residência"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Idade", b: "Saneamento básico"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Renda", b: "Escolaridade"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Renda", b: "Tipo de residência"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Renda", b: "Saneamento básico"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Escolaridade", b: "Tipo de residência"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Escolaridade", b: "Saneamento básico"},
+    {dim: "Categoria: Vulnerabilidade Socioeconômica", pergunta: "Considerando a vulnerabilidade socioeconômica, qual indicador possui maior importância?", a: "Tipo de residência", b: "Saneamento básico"},
+    
+    // COMPORTAMENTAL (1 comparação)
+    {dim: "Categoria: Vulnerabilidade Comportamental/Perceptiva (Emergências Climáticas)", pergunta: "Considerando a vulnerabilidade comportamental, qual indicador possui maior importância?", a: "Consciência sobre mudanças climáticas", b: "Percepção de risco à desastre"},
+    
+    // EXPOSIÇÃO (6 comparações completas)
+    {dim: "Categoria: Exposição Populacional", pergunta: "Considerando a exposição populacional às inundações, qual indicador possui maior importância?", a: "Densidade populacional", b: "Distância do rio"},
+    {dim: "Categoria: Exposição Populacional", pergunta: "Considerando a exposição populacional às inundações, qual indicador possui maior importância?", a: "Densidade populacional", b: "Uso e Ocupação do solo"},
+    {dim: "Categoria: Exposição Populacional", pergunta: "Considerando a exposição populacional às inundações, qual indicador possui maior importância?", a: "Densidade populacional", b: "Densidade predial"},
+    {dim: "Categoria: Exposição Populacional", pergunta: "Considerando a exposição populacional às inundações, qual indicador possui maior importância?", a: "Distância do rio", b: "Uso e Ocupação do solo"},
+    {dim: "Categoria: Exposição Populacional", pergunta: "Considerando a exposição populacional às inundações, qual indicador possui maior importância?", a: "Distância do rio", b: "Densidade predial"},
+    {dim: "Categoria: Exposição Populacional", pergunta: "Considerando a exposição populacional às inundações, qual indicador possui maior importância?", a: "Uso e Ocupação do solo", b: "Densidade predial"}
+];
+
+let respostas = [];
+let indice = 0;
+
+function verificarConsentimento(){
+    if(!document.getElementById("consentimento").checked){ alert("Aceite os termos."); return; }
+    nextPage(3);
+}
+
+function nextPage(n){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    if(typeof n === 'number') document.getElementById("page"+n).classList.add("active");
+    else document.getElementById(n).classList.add("active");
+}
+
+function prevPage(n){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    document.getElementById("page"+n).classList.add("active");
+}
+
+function startAHP(){
+    document.getElementById("progressContainer").style.display="block";
+    nextPage("comparacao");
+    mostrarPergunta();
+}
+
+function mostrarPergunta(){
+    let p = perguntas[indice];
+    document.getElementById("dimensao").innerText = p.dim;
+    document.getElementById("textoPergunta").innerText = p.pergunta;
+    document.getElementById("ladoEsquerdo").innerText = p.a;
+    document.getElementById("ladoDireito").innerText = p.b;
+    
+    // Atualiza a barra de progresso
+    document.getElementById("progressBar").style.width = ((indice + 1) / perguntas.length * 100) + "%";
+    
+    // Primeiro, desmarca todos os botões
+    document.querySelectorAll('input[name="escala"]').forEach(e => e.checked = false);
+
+    // DEPOIS, verifica se já existe uma resposta salva para este índice
+    if (respostas[indice] !== undefined) {
+        let valorSalvo = respostas[indice];
+        // Procura o input que tem o mesmo valor e marca como check
+        let inputParaMarcar = document.querySelector(`input[name="escala"][value="${valorSalvo}"]`);
+        if (inputParaMarcar) {
+            inputParaMarcar.checked = true;
+        }
+    }
+}
+
+function proximaPergunta(){
+    let v = document.querySelector('input[name="escala"]:checked');
+    if(!v){ alert("Selecione um valor."); return; }
+    
+    respostas[indice] = v.value;
+    
+    // NOVO: Salva o array de respostas e o índice atual no navegador
+    localStorage.setItem("respostas_ahp", JSON.stringify(respostas));
+    localStorage.setItem("indice_ahp", indice + 1);
+
+    indice++;
+    if(indice >= perguntas.length){ 
+        document.getElementById("progressContainer").style.display="none"; 
+        nextPage("final"); 
+    } else {
+        mostrarPergunta();
+    }
+}
+
+function voltarPergunta(){
+    if(indice > 0){ indice--; mostrarPergunta(); }
+    else { document.getElementById("progressContainer").style.display="none"; nextPage(4); }
+}
+
+function verificarOutro(){
+    document.getElementById("area_outro").style.display = (document.getElementById("area").value === "Outro") ? "block" : "none";
+}
+
+function enviarRespostas() {
+    nextPage("enviando");
+
+    // Mapeamento dos nomes das colunas conforme sua Tabela 8
+    const nomesColunas = [
+        "risco_perigo_vs_vuln", "risco_perigo_vs_expo", "risco_vuln_vs_expo", 
+        "perigo_suscet_vs_precip", 
+        "vuln_socio_vs_comport", 
+        "socio_idade_vs_renda", "socio_idade_vs_escolar", "socio_idade_vs_resid", "socio_idade_vs_san", 
+        "socio_renda_vs_escolar", "socio_renda_vs_resid", "socio_renda_vs_san", 
+        "socio_escolar_vs_resid", "socio_escolar_vs_san", 
+        "socio_resid_vs_san", 
+        "comport_clima_vs_percepcao", 
+        "expo_pop_vs_rio", "expo_pop_vs_uso", "expo_pop_vs_predial", 
+        "expo_rio_vs_uso", "expo_rio_vs_predial", "expo_uso_vs_predial" 
+    ];
+
+    let dados = {
+        area: (document.getElementById("area").value === "Outro") ? document.getElementById("area_outro").value : document.getElementById("area").value,
+        experiencia: document.getElementById("experiencia").value
+    };
+
+    // Adiciona as respostas ao objeto de dados
+    respostas.forEach((valor, i) => {
+        let chave = nomesColunas[i] || "pergunta_" + (i + 1);
+        dados[chave] = valor;
+    });
+
+    // Envio para o Google Sheets
+    fetch("https://script.google.com/macros/s/AKfycbznIJm8TwJZVtnaSjGaRY-QPE-qMvpguH04C1LoHXxwAhUAuj1ds_DjQ5W5dVptrQvS/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(dados)
+    })
+    .then(() => { 
+        localStorage.clear(); 
+        nextPage("confirmacao"); 
+    })
+    .catch(() => { 
+        alert("Erro ao enviar. Verifique sua conexão."); 
+        nextPage("final"); 
+    });
+}
+
+function gerarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // 1. Título e Cabeçalho
+    doc.setFontSize(16);
+    doc.text("Relatório de Participação - Pesquisa de Doutorado", 105, 20, { align: "center" });
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text("Ponderação de indicadores de análise de risco à inundação", 105, 28, { align: "center" });
+    doc.text("UNICENTRO - LabHidro", 105, 34, { align: "center" });
+    
+    // Linha divisória
+    doc.setLineWidth(0.5);
+    doc.line(20, 40, 190, 40);
+
+    // 2. Informações do Respondente
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.text(`Área de Atuação: ${document.getElementById("area").value}`, 20, 50);
+    doc.text(`Anos de Experiência: ${document.getElementById("experiencia").value}`, 20, 57);
+
+    // 3. Tabela de Respostas
+    const colunasTabela = ["Indicador A", "Importância", "Indicador B"];
+    const linhasTabela = perguntas.map((p, i) => {
+        return [p.a, respostas[i], p.b];
+    });
+
+    doc.autoTable({
+        startY: 65,
+        head: [colunasTabela],
+        body: linhasTabela,
+        theme: 'striped',
+        headStyles: { fillColor: [44, 62, 80] }, // Azul escuro profissional
+        styles: { fontSize: 9, cellPadding: 3 },
+        columnStyles: {
+            1: { halign: 'center', fontStyle: 'bold' } // Centraliza a coluna da escala
+        }
+    });
+
+   // 4. Rodapé com Data e Agradecimento
+    const finalY = doc.lastAutoTable.finalY || 70;
+    const dataAtual = new Date().toLocaleString('pt-BR');
+    
+    doc.setFontSize(9); // Mantém o tamanho 9 para ambas
+    doc.setTextColor(150); // Mantém o cinza para ambas
+    doc.setFont(undefined, 'normal');
+    
+    // Frase da data
+    doc.text(`Documento gerado em: ${dataAtual}`, 20, finalY + 10);
+    
+    // Frase de agradecimento logo abaixo (somamos 5 ao Y)
+    doc.text("Obrigado pela sua valiosa contribuição científica.", 20, finalY + 15);
+    
+    // Informações da Equipe de Pesquisa (descendo um pouco mais para não grudar)
+    doc.setTextColor(0); 
+    doc.setFont(undefined, 'bold');
+    doc.text("Pesquisadora responsável (Doutoranda):", 20, finalY + 25);
+    
+    doc.setFont(undefined, 'normal');
+    doc.text("Fabiula Eurich Machado", 20, finalY + 30);
+    doc.text("fabiula.eurich@gmail.com", 20, finalY + 35);
+    
+    doc.text("Orientador: Prof. Dr. Leandro Redin Vestena", 20, finalY + 42);
+
+    // 5. Salvar
+    doc.save(`Respostas_AHP_Inundacao_${new Date().getTime()}.pdf`);
+}
+
+// Quando a página carrega, verifica se há progresso salvo
+window.onload = function() {
+    const salvoRespostas = localStorage.getItem("respostas_ahp");
+    const salvoIndice = localStorage.getItem("indice_ahp");
+
+    if (salvoRespostas && salvoIndice) {
+        // Verifica se o índice salvo não ultrapassou o total de perguntas
+        if (confirm("Você já iniciou esta pesquisa anteriormente. Deseja continuar de onde parou?")) {
+            respostas = JSON.parse(salvoRespostas);
+            indice = parseInt(salvoIndice);
+            
+            // Caso o usuário tenha parado na tela final, resetamos para a última pergunta
+            if (indice >= perguntas.length) {
+                indice = perguntas.length - 1;
+            }
+
+            // Pula as páginas iniciais e vai direto para a comparação
+            document.getElementById("progressContainer").style.display = "block";
+            nextPage("comparacao");
+            mostrarPergunta();
+        } else {
+            // Se ele quiser recomeçar, limpamos o lixo da memória
+            localStorage.clear();
+        }
+    }
+};
+
+</script>
+</body>
+</html>
