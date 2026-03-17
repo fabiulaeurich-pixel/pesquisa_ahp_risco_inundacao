@@ -83,7 +83,7 @@ button{padding:12px 25px;font-size:16px;cursor:pointer;margin:10px;}
 <div id="page3" class="page">
 <div class="texto">
 <h2>Conceito utilizado</h2>
-<p style="font-size:20px;"><b>Risco = Perigo × Exposição × Vulnerabilidade</b></p>
+<p style="font-size:20px;"><b>Risco = Perigo × Vulnerabilidade x Exposição</b></p>
 <p>Nesta pesquisa utilizamos uma estrutura hierárquica baseada no método <b>Analytic Hierarchy Process (AHP)</b> para avaliar o risco de inundação.</p>
 <p>A estrutura abaixo apresenta os níveis de análise utilizados no estudo:</p>
 <pre style="text-align:left; font-size:15px; line-height:1.6; background:#f7f7f7; padding:15px; border-radius:6px;">
@@ -120,7 +120,7 @@ RISCO DE INUNDAÇÃO
 <div id="page4" class="page">
 <div class="texto">
 <h2>Identificação</h2>
-<p>Área de atuação</p>
+<p>Área em que atua</p>
 <select id="area" onchange="verificarOutro()">
     <option value="Defesa Civil">Defesa Civil</option>
     <option value="Engenharia">Engenharia</option>
@@ -374,7 +374,7 @@ function gerarPDF() {
     // 2. Informações do Respondente
     doc.setFontSize(12);
     doc.setTextColor(0);
-    doc.text(`Área de Atuação: ${document.getElementById("area").value}`, 20, 50);
+    doc.text(`Área em que atua: ${document.getElementById("area").value}`, 20, 50);
     doc.text(`Anos de Experiência: ${document.getElementById("experiencia").value}`, 20, 57);
 
     // 3. Tabela de Respostas
