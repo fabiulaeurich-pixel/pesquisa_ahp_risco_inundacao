@@ -170,11 +170,17 @@ RISCO DE INUNDAÇÃO
 </div>
 
 <div id="final" class="page">
-<div class="texto">
-<h2>Finalizar questionário</h2>
-<p>Clique em enviar para registrar suas respostas.</p>
-</div>
-<div class="botoes"><div></div><button onclick="enviarRespostas()">Enviar respostas</button></div>
+    <div class="texto">
+        <h2>Finalizar questionário</h2>
+        <p>Gostaria de deixar algum comentário, observação técnica ou justificativa sobre suas escolhas? (Opcional)</p>
+        <textarea id="comentarios" rows="4" style="width: 100%; border-radius: 5px; border: 1px solid #ccc; padding: 10px; font-family: Arial;" placeholder="Sua observação aqui..."></textarea>
+        <br><br>
+        <p>Clique em enviar para registrar suas respostas no banco de dados.</p>
+    </div>
+    <div class="botoes">
+        <button onclick="voltarPergunta()">Voltar</button>
+        <button onclick="enviarRespostas()">Enviar respostas</button>
+    </div>
 </div>
 
 <div id="enviando" class="page">
@@ -327,9 +333,10 @@ function enviarRespostas() {
         "expo_rio_vs_uso", "expo_rio_vs_predial", "expo_uso_vs_predial" 
     ];
 
-    let dados = {
+   let dados = {
         area: (document.getElementById("area").value === "Outro") ? document.getElementById("area_outro").value : document.getElementById("area").value,
-        experiencia: document.getElementById("experiencia").value
+        experiencia: document.getElementById("experiencia").value,
+        comentarios: document.getElementById("comentarios").value // ESTA É A LINHA NOVA
     };
 
     // Adiciona as respostas ao objeto de dados
